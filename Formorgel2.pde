@@ -24,7 +24,7 @@ void setup(){
   patterns.add(pattern002);
   patterns.add(pattern003);
   patterns.add(pattern004);
-  //patterns.add(pattern005);
+  patterns.add(pattern005);
   //patterns.add(pattern006);
   pattern = new Pattern(patterns);
 

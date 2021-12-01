@@ -10,7 +10,6 @@ class Pattern{
     findintersections();
     //logNodeArray(intersections);
     generatePolygons();
-    println(polygons.size());
   }
   
   void draw(){
@@ -78,6 +77,21 @@ class Pattern{
       }
     }
 
+    for(Node node : intersections){
+      int adjacentNodes = 0;
+      ArrayList<Node> nodeArray = new ArrayList<Node>();
+      for(Line line : node.lines){
+        nodeArray.addAll(getAdjacentNodes(node, line));        
+      } 
+      node.adjacentNodes = nodeArray.size();
+      
+      if(nodeArray.size()==3){
+        println("------------ [" +node.pos.x + ", " + node.pos.y + "]");
+        for(Node n : nodeArray){
+          println("[" + n.pos.x + ", " + n.pos.y + "]");  
+        }
+      }
+    }
   }
   
   /* ----------------------- GENERATE POLYGONS ------------------------ */
@@ -103,7 +117,6 @@ class Pattern{
         }
       }
     }
-    
 
     //--------- ORDENEM ELS POLÍGONS
     //polygon.sort(function(a, b){return b.calculaArea() - a.calculaArea()});  
@@ -166,6 +179,18 @@ class Pattern{
     // We initialize the repetitions array.
     for(int i = 0; i<linies.size(); i++) repetitions[i] = 0;
 
+    // Let's get the last node
+    Node nodeA = path.get(path.size()-1);
+    // And the one before
+    Node nodeB = path.get(path.size()-2);
+    // Let's see what line they have in common
+    Line lineInCommon = nodeA.getLineInCommon(nodeB);
+    for(Line line : nodeA.lines){
+      if(line!=lineInCommon){
+        //if(getAdjacentNodes(nodeA,line).size()<2) return false;
+      }
+    }
+    //if(getAdjacentNodes(nodeB, lineInCommon).size()<2) return false;
 
     for(Node node : path){
       for(Line line : node.lines){
@@ -173,15 +198,13 @@ class Pattern{
       }
     }
 
-    boolean tooManyRepetitions = false;
-
     for(int i = 0; i<repetitions.length; i++){
       if(repetitions[i]>2){
-        tooManyRepetitions = true;
+        return true;
       }
     }
 
-    return tooManyRepetitions;
+    return false;
   }
   
   void afegeixPolygon(ArrayList<Node> path){

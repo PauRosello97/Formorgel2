@@ -2,6 +2,8 @@ class Node implements Comparable{
   
     PVector pos;
     ArrayList<Line> lines;
+    boolean special; // It is special if it has just one neightbor
+    int adjacentNodes;
   
     Node(float x, float y, Line[] l) {
       lines = new ArrayList<Line>();
@@ -12,7 +14,9 @@ class Node implements Comparable{
 
     void draw(){
       fill(0);
+      if(special) fill(0, 100, 100);
       ellipse(this.pos.x, this.pos.y, 20, 20);
+      text(adjacentNodes, pos.x+ 20, pos.y+30);
     }
 
     void merge(Node node) {
@@ -21,6 +25,15 @@ class Node implements Comparable{
           lines.add(line);
         }
       }
+    }
+
+    Line getLineInCommon(Node node){ 
+      for(Line line : lines){
+        for(Line _line : node.lines){
+          if(line == _line) return line;
+        }
+      }
+      return null;
     }
     
     int compareTo(Object o){
