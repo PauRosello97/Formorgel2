@@ -2,8 +2,6 @@ import java.util.*;
 
 int N_LINIES = 20;
 
-float lines_radius = 200;
-
 JSONObject pattern001, pattern002, pattern003;
 
 Pattern pattern;

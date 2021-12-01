@@ -6,7 +6,8 @@ class Pattern{
   Pattern(ArrayList<JSONObject> jsonPatterns){
     addPattern(jsonPatterns);
     findintersections();
-    generatePolygons();
+    logNodeArray(intersections);
+    //generatePolygons();
   }
   
   void draw(){
@@ -42,13 +43,15 @@ class Pattern{
     }
   }
   
+
+  /* ----------------------- FIND INTERSECTIONS ----------------------- */
+
   void findintersections(){
     intersections = new ArrayList<Node>();
     //Afegim totes les interseccions a l'array.
     for(int i = 0; i<linies.size(); i++){
       for(int j=i+1; j<linies.size(); j++){
         if(linies.get(i).intersects_at(linies.get(j))!=null){
-          
           PVector intersection = linies.get(i).intersects_at(linies.get(j));
           Line[] intersectionLines = {linies.get(i), linies.get(j)};
           intersections.add(new Node(intersection.x, intersection.y, intersectionLines) );
@@ -76,6 +79,7 @@ class Pattern{
     }
   }
   
+  /* ----------------------- GENERATE POLYGONS ------------------------ */
   void generatePolygons(){
     polygon = new ArrayList<Polygon>();
     
@@ -201,29 +205,6 @@ class Pattern{
     newPoly.ordenaPath();
     polygon.add(newPoly);
     polygon.get(polygon.size()-1).ordenaPath();
-  }
-
-  String nodeArrayToString(Node[] array){
-    String message = "";
-    for(int i=0; i<array.length; i++){
-      message += nodeToString(array[i]);
-    }
-    return message;
-  }
-  
-  void printPath(ArrayList<Node> path){
-    String message = "";
-    for(int i=0; i<path.size(); i++){
-      message += nodeToString(path.get(i));
-    }
-    println(message);
-  }
-
-  String nodeToString(Node node){
-    if(node!=null){
-      return "[" + node.pos.x + ", " + node.pos.y + "]";
-    }
-    return "[null]";
   }
   
   boolean sonElMateix(Node punt1, Node punt2){

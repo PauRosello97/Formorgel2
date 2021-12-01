@@ -12,6 +12,7 @@ class Node implements Comparable{
     void draw(){
       fill(0);
       ellipse(this.pos.x, this.pos.y, 20, 20);
+      text("[" + this.pos.x + ", " + this.pos.y + "]", this.pos.x + 30 , this.pos.y +30);
     }
 
     void uneix(Node node) {
