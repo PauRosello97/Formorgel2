@@ -134,7 +134,7 @@ class Pattern{
     // Agafem els nodes que estan connectats al node on ens trobem
     ArrayList<Node> punts = new ArrayList<Node>();
     for(Line line : lastNode.lines){
-      ArrayList<Node> otherNodes = getOtherPoints(lastNode, line);
+      ArrayList<Node> otherNodes = getAdjacentNodes(lastNode, line);
       for(Node node : otherNodes){
         punts.add(node);
       }
@@ -202,36 +202,40 @@ class Pattern{
     return son_el_mateix;
   }
   
-  ArrayList<Node> getOtherPoints(Node node, Line linia){
+  // This function returns the adjacent node to a given node of a line.
+  ArrayList<Node> getAdjacentNodes(Node node, Line line){
 
-    ArrayList<Node> otherPoints = new ArrayList<Node>();
-    for(int i = 0; i<intersections.size(); i++){
-      if(intersections.get(i)!=node && (intersections.get(i).lines.get(0) == linia || intersections.get(i).lines.get(1) == linia || (intersections.get(i).lines.size()> 2 && intersections.get(i).lines.get(2)==linia))){
-        otherPoints.add(intersections.get(i));
-      }
-    }
-
-    ArrayList<Node> punts_propers = new ArrayList<Node>();
-
-    //Recorrem cada node dels punts de la mateixa línia
-    for(int i = 0; i<otherPoints.size(); i++){
-      //I els comparem amb totes els altres
-      boolean cap_al_mig = true;
-      for(int j=0; j<otherPoints.size(); j++){
-        if(i!=j){
-          if(estaAlMig(node, otherPoints.get(i), otherPoints.get(j))){
-            cap_al_mig = false;
-          }
+    ArrayList<Node> otherNodes = new ArrayList<Node>();
+    // Iterate through all intersections
+    for(Node intersection : intersections){
+      // Except this one
+      if(intersection != node){
+        // If the intersection contains this line
+        for(Line l : intersection.lines){
+          // Add the intersection to the list
+          if(l == line) otherNodes.add(intersection);
         }
       }
-      if(cap_al_mig){
-        punts_propers.add(otherPoints.get(i));
-      }
     }
 
-    return punts_propers;
+    ArrayList<Node> adjacentNodes = new ArrayList<Node>();
+
+    // We iterate through all the other points
+    for(Node nodeA : otherNodes){
+      // And compare to the other ones
+      boolean adjacent = true;
+      for(Node nodeB : otherNodes){
+        // If B is between node and nodeA, then node and nodeA are not adjacent.
+        if(nodeA != nodeB && estaAlMig(node, nodeA, nodeB)) adjacent = false;
+      }
+      // If they are adjacent, we add them to the list.
+      if(adjacent) adjacentNodes.add(nodeA);
+    }
+
+    return adjacentNodes;
   }  
   
+  // Returns true if C is between A and B
   boolean estaAlMig(Node na, Node nb, Node nc){
     boolean esta_al_mig = false;
 
@@ -239,7 +243,7 @@ class Pattern{
     PVector b = nb.pos;
     PVector c = nc.pos;
 
-    if( ( (c.x>a.x&&c.x<b.x)||(c.x<a.x&&c.x>b.x) ) && ((c.y>a.y&&c.y<b.y)||(c.y<a.y&&c.y>b.y))){
+    if(((c.x>a.x&&c.x<b.x)||(c.x<a.x&&c.x>b.x) ) && ((c.y>a.y&&c.y<b.y)||(c.y<a.y&&c.y>b.y))){
       esta_al_mig = true;
     }else if((c.x==a.x) && ((c.y>a.y&&c.y<b.y)||(c.y<a.y&&c.y>b.y))){
       esta_al_mig = true;
