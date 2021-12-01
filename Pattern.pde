@@ -72,7 +72,7 @@ class Pattern{
     for(int i=0; i<intersections.size(); i++){
       for(int j=0; j<intersections.size(); j++){
         if(i!=j && intersections.get(i).pos.x == intersections.get(j).pos.x && intersections.get(i).pos.y == intersections.get(j).pos.y){
-          intersections.get(i).uneix(intersections.get(j));
+          intersections.get(i).merge(intersections.get(j));
           intersections.remove(i);
           if(i>0) i--;
         }

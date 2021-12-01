@@ -16,11 +16,9 @@ class Node implements Comparable{
       text("[" + this.pos.x + ", " + this.pos.y + "]", this.pos.x + 30 , this.pos.y +30);
     }
 
-    void uneix(Node node) {
-      if(node.lines.get(0)!=this.lines.get(0)&&node.lines.get(0)!=this.lines.get(1)){
-        this.lines.add(node.lines.get(0));
-      }else if(node.lines.get(1)!=this.lines.get(0)&&node.lines.get(1)!=this.lines.get(1)){
-        this.lines.add(node.lines.get(1));
+    void merge(Node node) {
+      for(Line line : node.lines){
+        if(!lines.contains(line)) lines.add(line);
       }
     }
     
