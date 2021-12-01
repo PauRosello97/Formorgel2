@@ -159,24 +159,18 @@ class Pattern{
     }
   } 
 
+  // Returns true if a line has been repeated too many times.
   boolean repeatedLine(ArrayList<Node> path){
     
     int[] repetitions = new int[linies.size()];
 
-    for(int i = 0; i<linies.size(); i++){
-      repetitions[i] = 0;
-    }
+    // We initialize the repetitions array.
+    for(int i = 0; i<linies.size(); i++) repetitions[i] = 0;
 
-    for(int i = 0; i<path.size(); i++){
-      
-      repetitions[posicioLinia(path.get(i).lines.get(0))]++;
-      repetitions[posicioLinia(path.get(i).lines.get(1))]++;
-      
-      if(path.get(i).lines.size()>2 ){
-        int position = posicioLinia(path.get(i).lines.get(2));
-        if(position>=0){
-          repetitions[posicioLinia(path.get(i).lines.get(2))]++;
-        }
+
+    for(Node node : path){
+      for(Line line : node.lines){
+        repetitions[linePosition(line)]++;
       }
     }
 
@@ -256,9 +250,9 @@ class Pattern{
     return esta_al_mig;
   }
 
-  int posicioLinia(Line linia){
+  int linePosition(Line line){
     for(int i = 0; i<linies.size(); i++){
-      if(linies.get(i)==linia){
+      if(linies.get(i)==line){
         return i;
       }
     }
