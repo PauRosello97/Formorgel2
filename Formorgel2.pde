@@ -20,8 +20,8 @@ void setup(){
   ArrayList<JSONObject> patterns = new ArrayList<JSONObject>();
   patterns.add(pattern001);
   patterns.add(pattern002);
-  //patterns.add(pattern003);
-  //patterns.add(pattern004);
+  patterns.add(pattern003);
+  patterns.add(pattern004);
   pattern = new Pattern(patterns);
 
   background(0, 0, 100);

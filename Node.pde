@@ -13,19 +13,12 @@ class Node implements Comparable{
     void draw(){
       fill(0);
       ellipse(this.pos.x, this.pos.y, 20, 20);
-      text("[" + lines.size() + "]", this.pos.x + 10 , this.pos.y +20);
-      text("[" + lines.size() + "]", this.pos.x + 10 , this.pos.y -20);
-      text("[" + lines.size() + "]", this.pos.x - 10 , this.pos.y +20);
-      text("[" + lines.size() + "]", this.pos.x - 10 , this.pos.y -20);
     }
 
     void merge(Node node) {
-      println("MERGE: " + node.pos.x + ", " + node.pos.y);
       for(Line line : node.lines){
         if(!lines.contains(line)){
-          println("add");
           lines.add(line);
-          println(lines.size());
         }
       }
     }
