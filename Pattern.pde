@@ -91,7 +91,7 @@ class Pattern{
       followPath(oldPath);
     }
 
-    /*
+    
     //Eliminem els poligons que continguin altres poligons
     Collections.sort(polygon);
     
@@ -118,7 +118,7 @@ class Pattern{
         }
       }
     }
-    */
+    
   }
   
   void followPath(ArrayList<Node> oldPath){
@@ -134,7 +134,7 @@ class Pattern{
     // Agafem els nodes que estan connectats al node on ens trobem
     ArrayList<Node> punts = new ArrayList<Node>();
     for(Line line : lastNode.lines){
-      ArrayList<Node> otherNodes = buscaAltresPunts(lastNode, line);
+      ArrayList<Node> otherNodes = getOtherPoints(lastNode, line);
       for(Node node : otherNodes){
         punts.add(node);
       }
@@ -152,45 +152,43 @@ class Pattern{
           if(newPath.size()>3){
             afegeixPolygon(newPath);
           }
-        }else if(!liniaRepetida(newPath)){
+        }else if(!repeatedLine(newPath)){
           followPath(newPath);
           
         }
     }
   } 
 
-  boolean liniaRepetida(ArrayList<Node> path){
+  boolean repeatedLine(ArrayList<Node> path){
     
-    int[] repeticions = new int[linies.size()];
+    int[] repetitions = new int[linies.size()];
 
     for(int i = 0; i<linies.size(); i++){
-      repeticions[i] = 0;
+      repetitions[i] = 0;
     }
 
     for(int i = 0; i<path.size(); i++){
       
-      repeticions[posicioLinia(path.get(i).lines.get(0))]++;
-      repeticions[posicioLinia(path.get(i).lines.get(1))]++;
+      repetitions[posicioLinia(path.get(i).lines.get(0))]++;
+      repetitions[posicioLinia(path.get(i).lines.get(1))]++;
       
       if(path.get(i).lines.size()>2 ){
         int position = posicioLinia(path.get(i).lines.get(2));
         if(position>=0){
-          repeticions[posicioLinia(path.get(i).lines.get(2))]++;
+          repetitions[posicioLinia(path.get(i).lines.get(2))]++;
         }
       }
     }
 
-    boolean massa_repeticions = false;
+    boolean tooManyRepetitions = false;
 
-    for(int i = 0; i<repeticions.length; i++){
-      
-      if(repeticions[i]>2){
-        massa_repeticions = true;
+    for(int i = 0; i<repetitions.length; i++){
+      if(repetitions[i]>2){
+        tooManyRepetitions = true;
       }
-      
     }
 
-    return massa_repeticions;
+    return tooManyRepetitions;
   }
   
   void afegeixPolygon(ArrayList<Node> path){
@@ -210,30 +208,30 @@ class Pattern{
     return son_el_mateix;
   }
   
-  ArrayList<Node> buscaAltresPunts(Node node, Line linia){
+  ArrayList<Node> getOtherPoints(Node node, Line linia){
 
-    ArrayList<Node> altres_punts = new ArrayList<Node>();
+    ArrayList<Node> otherPoints = new ArrayList<Node>();
     for(int i = 0; i<intersections.size(); i++){
       if(intersections.get(i)!=node && (intersections.get(i).lines.get(0) == linia || intersections.get(i).lines.get(1) == linia || (intersections.get(i).lines.size()> 2 && intersections.get(i).lines.get(2)==linia))){
-        altres_punts.add(intersections.get(i));
+        otherPoints.add(intersections.get(i));
       }
     }
 
     ArrayList<Node> punts_propers = new ArrayList<Node>();
 
     //Recorrem cada node dels punts de la mateixa línia
-    for(int i = 0; i<altres_punts.size(); i++){
+    for(int i = 0; i<otherPoints.size(); i++){
       //I els comparem amb totes els altres
       boolean cap_al_mig = true;
-      for(int j=0; j<altres_punts.size(); j++){
+      for(int j=0; j<otherPoints.size(); j++){
         if(i!=j){
-          if(estaAlMig(node, altres_punts.get(i), altres_punts.get(j))){
+          if(estaAlMig(node, otherPoints.get(i), otherPoints.get(j))){
             cap_al_mig = false;
           }
         }
       }
       if(cap_al_mig){
-        punts_propers.add(altres_punts.get(i));
+        punts_propers.add(otherPoints.get(i));
       }
     }
 
