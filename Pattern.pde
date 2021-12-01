@@ -1,7 +1,7 @@
 class Pattern{
   ArrayList<Line> linies = new ArrayList<Line>();
   ArrayList<Node> intersections = new ArrayList<Node>();
-  ArrayList<Polygon> polygon = new ArrayList<Polygon>();
+  ArrayList<Polygon> polygons = new ArrayList<Polygon>();
   Oscilator oscilator = new Oscilator();
   
   Pattern(ArrayList<JSONObject> jsonPatterns){
@@ -10,16 +10,14 @@ class Pattern{
     findintersections();
     //logNodeArray(intersections);
     generatePolygons();
+    println(polygons.size());
   }
   
   void draw(){
 
     noStroke();
-    for(int i = 0; i<polygon.size(); i++){ polygon.get(i).draw(); }
-    
-    for(int i = 0; i<intersections.size(); i++){
-      intersections.get(i).draw();
-    }
+    for(Polygon polygon : polygons) polygon.draw(); 
+    for(Node intersection : intersections) intersection.draw();
     
     strokeWeight(1);
     for(int i = 0; i<linies.size(); i++){ linies.get(i).draw();  }
@@ -84,7 +82,7 @@ class Pattern{
   
   /* ----------------------- GENERATE POLYGONS ------------------------ */
   void generatePolygons(){
-    polygon = new ArrayList<Polygon>();
+    polygons = new ArrayList<Polygon>();
     
     // We iterate through all the intersections, and we start a new path from there.
     for(Node intersection : intersections){
@@ -96,25 +94,25 @@ class Pattern{
     //Collections.sort(polygon);
     
     // We remove polygons sharing more than one node with other polygons.
-    
-    for(int i = 0; i<polygon.size(); i++){
-      for(int j=i+1; j<polygon.size(); j++){
-        if(commonNodes(polygon.get(i), polygon.get(j))>2){
-          polygon.remove(i);
+    for(int i = 0; i<polygons.size(); i++){
+      for(int j=i+1; j<polygons.size(); j++){
+        if(commonNodes(polygons.get(i), polygons.get(j))>2){
+          polygons.remove(i);
           i--;
-          j=polygon.size();
+          j=polygons.size();
         }
       }
     }
+    
 
     //--------- ORDENEM ELS POLÍGONS
     //polygon.sort(function(a, b){return b.calculaArea() - a.calculaArea()});  
 
     //--------- ELIMINEM POLÍGONS QUE CONTINGUIN PUNTS
-    for(int i = 0; i<polygon.size(); i++){
+    for(int i = 0; i<polygons.size(); i++){
       for(int j=0; j<intersections.size(); j++){
-        if(nodeDinsPoli(intersections.get(j), polygon.get(i))){
-          polygon.remove(i);
+        if(nodeDinsPoli(intersections.get(j), polygons.get(i))){
+          polygons.remove(i);
           i--;
           j=intersections.size();
         }
@@ -189,8 +187,8 @@ class Pattern{
   void afegeixPolygon(ArrayList<Node> path){
     Polygon newPoly = new Polygon(path);
     newPoly.ordenaPath();
-    polygon.add(newPoly);
-    polygon.get(polygon.size()-1).ordenaPath();
+    polygons.add(newPoly);
+    polygons.get(polygons.size()-1).ordenaPath();
   }
   
   boolean sonElMateix(Node punt1, Node punt2){
@@ -267,25 +265,25 @@ class Pattern{
   boolean jaExisteix(Polygon pol){
     boolean ja_existeix = false;
     //Recorrem tots els polígons
-    for(int i = 0; i<polygon.size(); i++){
+    for(int i = 0; i<polygons.size(); i++){
       //Comencem considerant que si que existeix.
       boolean es_igual_1 = true;
       boolean es_igual_2 = true;
       
-      int l = polygon.get(i).path.size();
+      int l = polygons.get(i).path.size();
       
       //Mirem si els dos polígons tenen el mateix nombre de nodes.
       if(l==pol.path.size()){
         //Recorrem cada posició del polígon i.
         for(int j=0; j<l; j++){
-          if(pol.path.get(j).pos!=polygon.get(i).path.get(j).pos){
+          if(pol.path.get(j).pos!=polygons.get(i).path.get(j).pos){
             es_igual_1 = false;
           }
-          if(pol.path.get(0).pos!=polygon.get(i).path.get(0).pos){
+          if(pol.path.get(0).pos!=polygons.get(i).path.get(0).pos){
             es_igual_2 = false;
           }
           if(j!=0){
-            if(pol.path.get(j).pos!=polygon.get(i).path.get(l-j).pos){
+            if(pol.path.get(j).pos!=polygons.get(i).path.get(l-j).pos){
               es_igual_2 = false;
             }
           }
