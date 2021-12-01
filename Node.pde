@@ -1,12 +1,13 @@
 class Node implements Comparable{
   
     PVector pos;
-    Line[] linia = new Line[3];
+    ArrayList<Line> linia;
   
     Node(float x, float y, Line[] l) {
+      linia = new ArrayList<Line>();
       this.pos = new PVector(x, y);
-      this.linia[0] = l[0];
-      this.linia[1] = l[1];
+      this.linia.add(l[0]);
+      this.linia.add(l[1]);
     }
 
     void draw(){
@@ -16,10 +17,10 @@ class Node implements Comparable{
     }
 
     void uneix(Node node) {
-      if(node.linia[0]!=this.linia[0]&&node.linia[0]!=this.linia[1]){
-        this.linia[2]=node.linia[0];
-      }else if(node.linia[1]!=this.linia[0]&&node.linia[1]!=this.linia[1]){
-        this.linia[2]=node.linia[1];
+      if(node.linia.get(0)!=this.linia.get(0)&&node.linia.get(0)!=this.linia.get(1)){
+        this.linia.add(node.linia.get(0));
+      }else if(node.linia.get(1)!=this.linia.get(0)&&node.linia.get(1)!=this.linia.get(1)){
+        this.linia.add(node.linia.get(1));
       }
     }
     
