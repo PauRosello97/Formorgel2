@@ -7,7 +7,7 @@ class Pattern{
     addPattern(jsonPatterns);
     findintersections();
     logNodeArray(intersections);
-    //generatePolygons();
+    generatePolygons();
   }
   
   void draw(){
@@ -67,16 +67,18 @@ class Pattern{
       }
     }
     
-    Collections.sort(intersections);
-    // Unim interseccions iguals.
-    // Funciona perquè l'array està ordenat i les iguals estaràn juntes.
-    for(int i = 0; i<intersections.size()-1; i++){
-      if(abs(intersections.get(i).pos.x-intersections.get(i+1).pos.x)<0.0001 && abs(intersections.get(i).pos.y-intersections.get(i+1).pos.y)<0.0001){
-        intersections.get(i+1).uneix(intersections.get(i));
-        intersections.remove(i);
-        i--;
+    // We merge repeated intersections
+    for(int i=0; i<intersections.size(); i++){
+      for(int j=0; j<intersections.size(); j++){
+        if(i!=j && intersections.get(i).pos.x == intersections.get(j).pos.x && intersections.get(i).pos.y == intersections.get(j).pos.y){
+          println("[" + intersections.get(i).pos.x + ", " + intersections.get(i).pos.y + "] - [" + intersections.get(j).pos.x + ", " + intersections.get(j).pos.y + "]");
+          intersections.get(i).uneix(intersections.get(j));
+          intersections.remove(i);
+          if(i>0) i--;
+        }
       }
     }
+
   }
   
   /* ----------------------- GENERATE POLYGONS ------------------------ */
