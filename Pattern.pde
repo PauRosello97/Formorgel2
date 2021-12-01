@@ -6,7 +6,7 @@ class Pattern{
   Pattern(ArrayList<JSONObject> jsonPatterns){
     addPattern(jsonPatterns);
     findintersections();
-    logNodeArray(intersections);
+    //logNodeArray(intersections);
     generatePolygons();
   }
   
@@ -41,8 +41,7 @@ class Pattern{
           linies.add(new Line(new PVector(k*start[0], k*start[1]), new PVector(k*end[0], k*end[1])));
       }
     }
-  }
-  
+  }  
 
   /* ----------------------- FIND INTERSECTIONS ----------------------- */
 
@@ -72,7 +71,7 @@ class Pattern{
     for(int i=0; i<intersections.size(); i++){
       for(int j=0; j<intersections.size(); j++){
         if(i!=j && intersections.get(i).pos.x == intersections.get(j).pos.x && intersections.get(i).pos.y == intersections.get(j).pos.y){
-          intersections.get(i).merge(intersections.get(j));
+          intersections.get(j).merge(intersections.get(i));
           intersections.remove(i);
           if(i>0) i--;
         }
@@ -123,7 +122,7 @@ class Pattern{
   
   void followPath(ArrayList<Node> oldPath){
     ArrayList<Node> path = new ArrayList<Node>();
-    logPath(oldPath);
+    //logPath(oldPath);
     for(int i=0; i<oldPath.size(); i++){
       path.add(oldPath.get(i));
     }
