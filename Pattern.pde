@@ -2,9 +2,11 @@ class Pattern{
   ArrayList<Line> linies = new ArrayList<Line>();
   ArrayList<Node> intersections = new ArrayList<Node>();
   ArrayList<Polygon> polygon = new ArrayList<Polygon>();
+  Oscilator oscilator = new Oscilator();
   
   Pattern(ArrayList<JSONObject> jsonPatterns){
     addPattern(jsonPatterns);
+    //linies.addAll(oscilator.getLines());
     findintersections();
     //logNodeArray(intersections);
     generatePolygons();
@@ -84,19 +86,20 @@ class Pattern{
   void generatePolygons(){
     polygon = new ArrayList<Polygon>();
     
-    for(int i = 0; i<intersections.size(); i++){
+    // We iterate through all the intersections, and we start a new path from there.
+    for(Node intersection : intersections){
       ArrayList<Node> oldPath = new ArrayList<Node>();
-      oldPath.add(intersections.get(i));
+      oldPath.add(intersection);
       followPath(oldPath);
     }
 
+    //Collections.sort(polygon);
     
-    //Eliminem els poligons que continguin altres poligons
-    Collections.sort(polygon);
+    // We remove polygons sharing more than one node with other polygons.
     
     for(int i = 0; i<polygon.size(); i++){
       for(int j=i+1; j<polygon.size(); j++){
-        if(nodesEnComu(polygon.get(i), polygon.get(j))>2){
+        if(commonNodes(polygon.get(i), polygon.get(j))>2){
           polygon.remove(i);
           i--;
           j=polygon.size();
@@ -153,7 +156,6 @@ class Pattern{
           }
         }else if(!repeatedLine(newPath)){
           followPath(newPath);
-          
         }
     }
   } 
@@ -301,7 +303,7 @@ class Pattern{
     return ja_existeix;
   }
   
-  int nodesEnComu(Polygon pol1, Polygon pol2){
+  int commonNodes(Polygon pol1, Polygon pol2){
     int nodes_en_comu = 0;
     for(int i = 0; i<pol1.path.size(); i++){
       for(int j=0; j<pol2.path.size(); j++){
