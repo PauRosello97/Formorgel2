@@ -131,9 +131,10 @@ class Pattern{
     Node lastNode = path.get(path.size()-1);
 
     // Agafem les linies que formen la intersecció.
-    Line l1 = lastNode.linia.get(0);
-    Line l2 = lastNode.linia.get(1);
-    Line l3 = lastNode.linia.size()>2 ? lastNode.linia.get(2) : null;
+    ArrayList<Line> ls = new ArrayList<Line>();
+    Line l1 = lastNode.lines.get(0);
+    Line l2 = lastNode.lines.get(1);
+    Line l3 = lastNode.lines.size()>2 ? lastNode.lines.get(2) : null;
     
     // Agafem els nodes que estan connectats al node on ens trobem
     ArrayList<Node> punts_1 = buscaAltresPunts(lastNode, l1);
@@ -179,13 +180,13 @@ class Pattern{
 
     for(int i = 0; i<path.size(); i++){
       
-      repeticions[posicioLinia(path.get(i).linia.get(0))]++;
-      repeticions[posicioLinia(path.get(i).linia.get(1))]++;
+      repeticions[posicioLinia(path.get(i).lines.get(0))]++;
+      repeticions[posicioLinia(path.get(i).lines.get(1))]++;
       
-      if(path.get(i).linia.size()>2 ){
-        int position = posicioLinia(path.get(i).linia.get(2));
+      if(path.get(i).lines.size()>2 ){
+        int position = posicioLinia(path.get(i).lines.get(2));
         if(position>=0){
-          repeticions[posicioLinia(path.get(i).linia.get(2))]++;
+          repeticions[posicioLinia(path.get(i).lines.get(2))]++;
         }
       }
     }
@@ -224,7 +225,7 @@ class Pattern{
 
     ArrayList<Node> altres_punts = new ArrayList<Node>();
     for(int i = 0; i<intersections.size(); i++){
-      if(intersections.get(i)!=node && (intersections.get(i).linia.get(0) == linia || intersections.get(i).linia.get(1) == linia || (intersections.get(i).linia.size()> 2 && intersections.get(i).linia.get(2)==linia))){
+      if(intersections.get(i)!=node && (intersections.get(i).lines.get(0) == linia || intersections.get(i).lines.get(1) == linia || (intersections.get(i).lines.size()> 2 && intersections.get(i).lines.get(2)==linia))){
         altres_punts.add(intersections.get(i));
       }
     }
