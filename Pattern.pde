@@ -131,32 +131,22 @@ class Pattern{
     Node lastNode = path.get(path.size()-1);
 
     // Agafem les linies que formen la intersecció.
-    ArrayList<Line> ls = new ArrayList<Line>();
-    Line l1 = lastNode.lines.get(0);
-    Line l2 = lastNode.lines.get(1);
-    Line l3 = lastNode.lines.size()>2 ? lastNode.lines.get(2) : null;
-    
     // Agafem els nodes que estan connectats al node on ens trobem
-    ArrayList<Node> punts_1 = buscaAltresPunts(lastNode, l1);
-    ArrayList<Node> punts_2 = buscaAltresPunts(lastNode, l2);
-    ArrayList<Node> punts_3 = l3 != null ? buscaAltresPunts(lastNode, l3) : null;
-    Node[] punts = new Node[6];
-
-    punts[0] = punts_1.size()>0 ? punts_1.get(0) : null;
-    punts[1] = punts_1.size()>1 ? punts_1.get(1) : null;
-    punts[2] = punts_2.size()>0 ? punts_2.get(0) : null;
-    punts[3] = punts_2.size()>1 ? punts_2.get(1) : null;
-    punts[4] = l3 != null && punts_3.size()>0 ? punts_3.get(0) : null;
-    punts[5] = l3 != null && punts_3.size()>1 ? punts_3.get(1) : null;
-   
-    for(int i=0; i<6; i++){
-      if(punts[i]!=null){ 
+    ArrayList<Node> punts = new ArrayList<Node>();
+    for(Line line : lastNode.lines){
+      ArrayList<Node> otherNodes = buscaAltresPunts(lastNode, line);
+      for(Node node : otherNodes){
+        punts.add(node);
+      }
+    }
+       
+    for(Node punt : punts){
 
         ArrayList<Node> newPath = new ArrayList<Node>();
         for(int j=0; j<path.size(); j++){
           newPath.add(path.get(j));
         }
-        newPath.add(punts[i]);  
+        newPath.add(punt);  
         
         if(newPath.get(0)==newPath.get(newPath.size()-1)){
           if(newPath.size()>3){
@@ -166,7 +156,6 @@ class Pattern{
           followPath(newPath);
           
         }
-      }
     }
   } 
 
