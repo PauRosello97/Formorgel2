@@ -4,8 +4,8 @@ void logNodeArray(ArrayList<Node> nodes){
     }
 }
   
-void printPath(ArrayList<Node> path){
-    String message = "";
+void logPath(ArrayList<Node> path){
+    String message = "";    
     for(int i=0; i<path.size(); i++){
       message += nodeToString(path.get(i));
     }

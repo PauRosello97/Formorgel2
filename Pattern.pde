@@ -67,11 +67,11 @@ class Pattern{
       }
     }
     
+    Collections.sort(intersections);
     // We merge repeated intersections
     for(int i=0; i<intersections.size(); i++){
       for(int j=0; j<intersections.size(); j++){
         if(i!=j && intersections.get(i).pos.x == intersections.get(j).pos.x && intersections.get(i).pos.y == intersections.get(j).pos.y){
-          println("[" + intersections.get(i).pos.x + ", " + intersections.get(i).pos.y + "] - [" + intersections.get(j).pos.x + ", " + intersections.get(j).pos.y + "]");
           intersections.get(i).uneix(intersections.get(j));
           intersections.remove(i);
           if(i>0) i--;
@@ -91,6 +91,7 @@ class Pattern{
       followPath(oldPath);
     }
 
+    /*
     //Eliminem els poligons que continguin altres poligons
     Collections.sort(polygon);
     
@@ -108,21 +109,21 @@ class Pattern{
     //polygon.sort(function(a, b){return b.calculaArea() - a.calculaArea()});  
 
     //--------- ELIMINEM POLÍGONS QUE CONTINGUIN PUNTS
-    
     for(int i = 0; i<polygon.size(); i++){
       for(int j=0; j<intersections.size(); j++){
         if(nodeDinsPoli(intersections.get(j), polygon.get(i))){
-          
           polygon.remove(i);
           i--;
           j=intersections.size();
         }
       }
     }
+    */
   }
   
   void followPath(ArrayList<Node> oldPath){
     ArrayList<Node> path = new ArrayList<Node>();
+    logPath(oldPath);
     for(int i=0; i<oldPath.size(); i++){
       path.add(oldPath.get(i));
     }
